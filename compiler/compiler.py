@@ -18,7 +18,7 @@ def generate_line_error_msg(line: str, row: int, col: int):
     return f"At line {row}, column {col}:\n{line}\n{' ' * (col - 1)}^"
 
 
-def process_tokenize(tokenizer: Lexer, lines: list[str], verbose = False):
+def process_tokenize(tokenizer: Lexer, lines: list[str], verbose=False):
     logger = logging.getLogger(__name__)
     tokens = []
     try:
@@ -54,6 +54,7 @@ def process_parse(parser: Parser, tokens: list[ast.Token], lines: list[str], ver
         logger.exception("Parser error")
         return None
     return ast_tree
+
 
 def process_analyze(semantic_analyzer: SemanticAnalyzer, ast_tree: ast.Program, lines: list[str]):
     logger = logging.getLogger(__name__)
@@ -98,6 +99,7 @@ def process_generate_ir(ir_generator: IRGenerator, ast_tree: ast.Program, lines:
         return None
     return ir
 
+
 def process_compile_backend(ir: ir.Program, lines: list[str], verbose=False):
     logger = logging.getLogger(__name__)
     try:
@@ -120,6 +122,7 @@ def process_compile_backend(ir: ir.Program, lines: list[str], verbose=False):
         logger.exception("Backend error")
         return None
     return machine_code, defs
+
 
 def compile_program_pipeline(input_content: str, verbose: bool):
     lines = input_content.splitlines()

@@ -9,7 +9,9 @@ class InternalType(Enum):
     INT = "int"
     VOID = "void"
 
+
 # store start token for error messages and debugging
+
 
 class ASTNode:
     def __init__(self, start_token: Token):

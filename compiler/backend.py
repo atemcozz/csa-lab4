@@ -84,7 +84,6 @@ class CompilerBackend:
     def is_function_label(self, name: str):
         return name.startswith("function_") or name in self.ir_program.interrupt_table.values()
 
-
     # get variables reads and writes values for a single ir node
     def get_reads_writes(self, node: ir.IRNode):
         reads = []
@@ -130,7 +129,6 @@ class CompilerBackend:
             return True
         return True
 
-
     # scan variables inside function in a way to properly allocate stack for them later
     def scan_function_vars(self, start_idx):
         idx = start_idx + 1
@@ -150,7 +148,9 @@ class CompilerBackend:
 
         return args, local_vars, array_sizes
 
-    def update_scan_from_node(self, node: ir.IRNode, args: list, local_vars: list, local_vars_seen: set, array_sizes: dict):
+    def update_scan_from_node(
+        self, node: ir.IRNode, args: list, local_vars: list, local_vars_seen: set, array_sizes: dict
+    ):
         if isinstance(node, ir.LocalArrayAlloc):
             array_sizes[node.name] = node.size * 4
             if node.name not in local_vars_seen:
@@ -195,18 +195,18 @@ class CompilerBackend:
     def generate_text(self):
         self._is_int_function = False
         dispatch = {
-            ir.Label:           self.emit_label,
-            ir.Assign:          self.emit_assign,
-            ir.BinOp:           self.emit_binop,
-            ir.UnaryOp:         self.emit_unaryop,
-            ir.Call:            self.emit_call,
-            ir.Jump:            self.emit_jump,
-            ir.CondJump:        self.emit_condjump,
-            ir.ReadIO:          self.emit_read_io,
-            ir.WriteIO:         self.emit_write_io,
-            ir.Load:            self.emit_load,
-            ir.Store:           self.emit_store,
-            ir.Return:          self.emit_return,
+            ir.Label: self.emit_label,
+            ir.Assign: self.emit_assign,
+            ir.BinOp: self.emit_binop,
+            ir.UnaryOp: self.emit_unaryop,
+            ir.Call: self.emit_call,
+            ir.Jump: self.emit_jump,
+            ir.CondJump: self.emit_condjump,
+            ir.ReadIO: self.emit_read_io,
+            ir.WriteIO: self.emit_write_io,
+            ir.Load: self.emit_load,
+            ir.Store: self.emit_store,
+            ir.Return: self.emit_return,
             ir.LocalArrayAlloc: lambda _: None,
         }
         for idx, node in enumerate(self.ir_program.instructions):
@@ -264,9 +264,15 @@ class CompilerBackend:
 
     def emit_binop_op(self, op: str):
         ops = {
-            "+": isa.OpCode.ADD, "-": isa.OpCode.SUB, "*": isa.OpCode.MUL,
-            "/": isa.OpCode.DIV, "%": isa.OpCode.REM, "&": isa.OpCode.AND,
-            "|": isa.OpCode.OR,  "^": isa.OpCode.XOR, "<<": isa.OpCode.SLL,
+            "+": isa.OpCode.ADD,
+            "-": isa.OpCode.SUB,
+            "*": isa.OpCode.MUL,
+            "/": isa.OpCode.DIV,
+            "%": isa.OpCode.REM,
+            "&": isa.OpCode.AND,
+            "|": isa.OpCode.OR,
+            "^": isa.OpCode.XOR,
+            "<<": isa.OpCode.SLL,
             ">>": isa.OpCode.SRA,
         }
         if op in ops:
@@ -289,9 +295,12 @@ class CompilerBackend:
     def emit_comparison(self, op: str):
         reg_a, reg_b = self.R_T0, self.R_T1
         cmp_opcodes = {
-            "<": isa.OpCode.BLT, ">": isa.OpCode.BLT,
-            "<=": isa.OpCode.BGE, ">=": isa.OpCode.BGE,
-            "==": isa.OpCode.BEQ, "!=": isa.OpCode.BNE,
+            "<": isa.OpCode.BLT,
+            ">": isa.OpCode.BLT,
+            "<=": isa.OpCode.BGE,
+            ">=": isa.OpCode.BGE,
+            "==": isa.OpCode.BEQ,
+            "!=": isa.OpCode.BNE,
         }
         opcode = cmp_opcodes[op]
         if op in (">", "<="):

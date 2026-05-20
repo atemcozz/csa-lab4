@@ -24,6 +24,7 @@ BITWISE_OPS = {TokenType.OP_OR, TokenType.OP_XOR, TokenType.OP_AND}
 
 INTERRUPT_KEYWORD = "__interrupt__"
 
+
 # helper class for decl suffix
 class DeclarationSuffix:
     def __init__(self, is_array: bool, array_size: int | None, initializer: ast.Expression | None):
@@ -364,7 +365,9 @@ class Parser:
 
     def parse_unary_expression(self) -> ast.Expression:
         token = self.peek_token()
-        if token and (token.type == TokenType.OP_MINUS or token.type == TokenType.OP_LOGICAL_NOT or token.type == TokenType.OP_NOT):
+        if token and (
+            token.type == TokenType.OP_MINUS or token.type == TokenType.OP_LOGICAL_NOT or token.type == TokenType.OP_NOT
+        ):
             token = self.consume_token()
             if not token:
                 raise ParserError("Unexpected end of input")

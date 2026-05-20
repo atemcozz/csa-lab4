@@ -28,6 +28,7 @@ class SemanticError(Exception):
 
     pass
 
+
 # table for current scope
 class SymbolTable:
     def __init__(self):
@@ -35,6 +36,7 @@ class SymbolTable:
 
     def lookup(self, name: str) -> ast.Declaration | None:
         return self.symbols.get(name)
+
 
 # stack of scopes
 class SymbolStack:
@@ -107,9 +109,7 @@ class SemanticAnalyzer:
         initializer = decl.initializer
         if initializer:
             init_type = self.analyze_expression(initializer)
-            type_name = (
-                decl.decl_type.value if isinstance(decl.decl_type, ast.InternalType) else decl.decl_type.name
-            )
+            type_name = decl.decl_type.value if isinstance(decl.decl_type, ast.InternalType) else decl.decl_type.name
             decl_type = LangType(type_name, decl.is_array)
             if init_type != decl_type:
                 raise SemanticError(f"Type mismatch in initializer: expected {decl_type}, got {init_type}", decl)
@@ -175,7 +175,6 @@ class SemanticAnalyzer:
         handler = handlers.get(type(expr))
         return handler(expr) if handler else LangType("void")
 
-
     def analyze_unary_expression(self, expr: ast.UnaryExpression) -> LangType:
         operand_type = self.analyze_expression(expr.operand)
         if operand_type.is_array:
@@ -189,7 +188,6 @@ class SemanticAnalyzer:
 
         type_name = decl.decl_type.value if isinstance(decl.decl_type, ast.InternalType) else decl.decl_type.name
         return LangType(type_name, decl.is_array)
-
 
     def analyze_binary_expression(self, expr: ast.BinaryExpression) -> LangType:
         l_type = self.analyze_expression(expr.left)
@@ -221,7 +219,7 @@ class SemanticAnalyzer:
 
     def analyze_call_expression(self, expr: ast.CallExpression):
         if expr.name in BUILTINS_FUNCTIONS:
-                return BUILTINS_FUNCTIONS[expr.name]
+            return BUILTINS_FUNCTIONS[expr.name]
 
         decl = self.sym_stack.lookup(expr.name)
         if not decl:

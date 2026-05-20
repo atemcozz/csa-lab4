@@ -44,6 +44,7 @@ class TokenType(Enum):
     OP_RSHIFT = 35
     OP_NOT = 36
 
+
 KEYWORD = {"int", "if", "else", "while", "return", "void", "__interrupt__"}
 
 
@@ -193,7 +194,6 @@ class Lexer:
             return Token(TokenType.KEYWORD, word_str, self.line_number, self.position - self.last_line_start)
         return Token(TokenType.IDENTIFIER, word_str, self.line_number, self.position - self.last_line_start)
 
-
     def process_escape_char(self, char: str) -> str:
         match char:
             case "n":
@@ -310,7 +310,6 @@ class Lexer:
 
     def tokenize(self):
         tokens = []
-
 
         while self.has_more_tokens():
             self.skip_blanks_and_comments()

@@ -13,8 +13,6 @@ WORD_SIZE = 4
 WORD_MASK = 0xFFFFFFFF
 
 
-
-
 class Regs(Enum):
     zero = 0
     ra = 1
@@ -50,10 +48,12 @@ class Regs(Enum):
     t5 = 30
     t6 = 31
 
+
 REGS_NAMES = [Regs(i).name for i in range(32)]
 
 
 INT_TABLE_BASE = 0x10
+
 
 class CUState(Enum):
     FETCH = 0
@@ -274,9 +274,11 @@ def ins_sys(opcode: OpCode, imm: int = 0) -> bytes:
     res |= imm & 0x3FFFFFF
     return get_ins_bytes(res)
 
+
 # higher 20 bits
 def hi(val):
     return (val & 0xFFFFF000) >> 12
+
 
 # lower 12 bits
 def lo(val):

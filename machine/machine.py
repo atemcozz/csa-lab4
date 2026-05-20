@@ -32,20 +32,24 @@ class PcMuxSelect(Enum):
     ALU = 2
     EPC = 3
 
+
 class ArMuxSelect(Enum):
     PC = 0
     ALU = 1
     IVT = 2
+
 
 class RegWriteMuxSelect(Enum):
     ALU = 0
     DR = 1
     PC_INC = 2
 
+
 class AluRightMuxSelect(Enum):
     RS2 = 0
     IMM = 1
     DR = 2
+
 
 class AluOperation(Enum):
     ADD = 0
@@ -128,7 +132,6 @@ class ALU:
         return res
 
 
-
 class DataPath:
     def __init__(self, memory_size):
         self.memory_size = memory_size
@@ -189,7 +192,6 @@ class DataPath:
                 val = self.next_pc
 
         self.registers[reg_idx] = val & WORD_MASK
-
 
     def signal_alu_calculate(self, operation, left, right, right_mux: AluRightMuxSelect = AluRightMuxSelect.RS2):
         right_val = None
@@ -388,7 +390,6 @@ class ControlUnit:
             self.rd_idx = 0
             self.rs2_idx = (ir >> 21) & 0x1F
             self.rs1_idx = (ir >> 16) & 0x1F
-
 
         # imm bits for different types of instructions
 
@@ -655,8 +656,3 @@ class ControlUnit:
         s += f"| {self.datapath}"
 
         return s
-
-
-
-
-

@@ -1,4 +1,3 @@
-
 import argparse
 import logging
 import sys
@@ -28,6 +27,7 @@ def parse_schedule(input_file):
 
     return input_schedule
 
+
 def run_simulation(code_file, input_file, memory_size, tick_limit, verbose=False):
     logger = logging.getLogger(__name__)
     machine_code = None
@@ -43,7 +43,7 @@ def run_simulation(code_file, input_file, memory_size, tick_limit, verbose=False
         machine_code = f.read()
     datapath = DataPath(memory_size)
 
-    datapath.memory[0:len(machine_code)] = machine_code
+    datapath.memory[0 : len(machine_code)] = machine_code
 
     io_controller = IOController(input_schedule=input_schedule)
 
@@ -67,19 +67,16 @@ def run_simulation(code_file, input_file, memory_size, tick_limit, verbose=False
 def main():
     logging.basicConfig(level=logging.DEBUG, format="%(message)s", stream=sys.stdout)
 
-    parser = argparse.ArgumentParser(
-        prog="Machine",
-        description="Machine model")
+    parser = argparse.ArgumentParser(prog="Machine", description="Machine model")
     parser.add_argument("source_path")
     parser.add_argument("-i", "--input_schedule_path")
     parser.add_argument("-v", "--verbose", action="store_true")
-    parser.add_argument("-m", "--memory_size", type=int, default=64*1024, help="Memory size in bytes (default: 8192)")
+    parser.add_argument("-m", "--memory_size", type=int, default=64 * 1024, help="Memory size in bytes (default: 8192)")
     parser.add_argument("-l", "--tick_limit", type=int, default=10000, help="Simulation tick limit (default: 10000)")
     args = parser.parse_args()
 
-
     run_simulation(args.source_path, args.input_schedule_path, args.memory_size, args.tick_limit, args.verbose)
+
 
 if __name__ == "__main__":
     main()
-

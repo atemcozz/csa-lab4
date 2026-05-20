@@ -24,6 +24,7 @@ def truncate_log(log, first_lines, last_lines):
     res_lines.extend(log_lines[-last_lines:])
     return "\n".join(res_lines)
 
+
 @pytest.mark.golden_test("golden/*.yml")
 def test_translator_and_machine(golden, caplog):
     caplog.set_level(logging.DEBUG)
@@ -50,15 +51,13 @@ def test_translator_and_machine(golden, caplog):
             print("============================================================")
             memory_size = golden.get("memory_size", 8192)
             tick_limit = golden.get("limit", 10000)
-            machine_runner.run_simulation(
-                target, input_stream, memory_size, tick_limit, verbose=True)
+            machine_runner.run_simulation(target, input_stream, memory_size, tick_limit, verbose=True)
 
         # Выходные данные также считываем в переменные.
         with open(target, "rb") as file:
             code = file.read()
         with open(target_hex, encoding="utf-8") as file:
             code_hex = file.read()
-
 
         trunc_caplog = truncate_log(caplog.text, LOG_MAX_FIRST_LINES, LOG_MAX_LAST_LINES)
 

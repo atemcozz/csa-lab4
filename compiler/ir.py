@@ -59,6 +59,7 @@ class Jump(IRNode):
     def __repr__(self):
         return f"Jump({self.target.name})"
 
+
 # jump if condition is false
 class CondJump(IRNode):
     def __init__(self, condition, label: Label):
@@ -107,6 +108,7 @@ class Load(IRNode):
     def __repr__(self):
         return f"Load({self.dest} = mem[{self.address}+{self.imm}])"
 
+
 # for stack array allocation
 class LocalArrayAlloc(IRNode):
     def __init__(self, name: str, size: int):
@@ -149,8 +151,8 @@ class StringData(IRNode):
         return f"StringData({self.name}: {self.value!r})"
 
 
-
 # in/out instructions
+
 
 class ReadIO(IRNode):
     def __init__(self, dest, port):
@@ -409,13 +411,11 @@ class IRGenerator:
             else:
                 self.push_statement(el)
 
-
         self.sym_stack.pop()
 
     def push_compound_stmt_return(self, el: ast.ReturnStatement):
         value_var = self.push_expression(el.value) if el.value else None
         self.push_node(Return(value_var))
-
 
     def push_function(self, func_def: ast.FunctionDefinition):
         label = Label(f"function_{func_def.name}")
