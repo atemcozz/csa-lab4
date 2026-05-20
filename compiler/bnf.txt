@@ -1,0 +1,70 @@
+<program> ::= <external-declaration>*
+
+
+<external-declaration> ::= <interrupt-marker> <type-specifier> <identifier> <function-suffix>
+                         | <type-specifier> <identifier> ( <function-suffix> | <declaration-suffix> )
+
+<function-suffix>    ::= "(" <parameter-list>? ")" <compound-statement>
+<declaration-suffix> ::= ( "[" <integer-constant> "]"
+                         | "=" <expression>
+                         | "[]" "=" <string>
+                         ) ";"
+
+
+<type-specifier> ::= "int" | "void" | <identifier>
+
+<parameter-list> ::= <parameter-declaration> { "," <parameter-declaration> }*
+
+<parameter-declaration> ::= <type-specifier> <identifier> ("[" "]")?
+
+
+<declaration>  ::= <type-specifier> <identifier> <declaration-suffix>
+
+
+<compound-statement> ::= "{" { <declaration> | <statement> }* "}"
+
+<statement> ::= <assignment-statement>
+              | <expression-statement>
+              | <compound-statement>
+              | <if-statement>
+              | <while-statement>
+              | <return-statement>
+
+<assignment-statement> ::= <identifier> "=" <expression> ";"
+                         | <identifier> "[" <expression> "]" "=" <expression> ";"
+
+<expression-statement> ::= <expression>? ";"
+
+<if-statement> ::= "if" "(" <expression> ")" <statement> [ "else" <statement> ]
+
+<while-statement> ::= "while" "(" <expression> ")" <statement>
+
+<return-statement> ::= "return" <expression>? ";"
+
+<expression> ::= <logical-or-expression>
+
+<logical-or-expression> ::= <logical-and-expression> { "||" <logical-and-expression> }*
+<logical-and-expression> ::= <equality-expression> { "&&" <equality-expression> }*
+<equality-expression> ::= <relational-expression> { ("==" | "!=") <relational-expression> }*
+<relational-expression> ::= <shift-expression> { ("<" | ">" | "<=" | ">=") <shift-expression> }*
+<shift-expression> ::= <additive-expression> { ("<<" | ">>") <additive-expression> }*
+<additive-expression> ::= <multiplicative-expression> { ("+" | "-") <multiplicative-expression> }*
+<multiplicative-expression> ::= <bitwise-expression> { ("*" | "/" | "%") <bitwise-expression> }*
+<bitwise-expression> ::= <unary-expression> { ("|" | "^" | "&") <unary-expression> }*
+
+
+<unary-expression> ::= ( "-" | "!" | "~" ) <unary-expression> | <primary-expression>
+
+
+
+<primary-expression> ::= <identifier>
+                       | <identifier> "[" <expression> "]"
+                       | <identifier> "(" <argument-expression-list>? ")"
+                       | <integer-constant>
+                       | <char-constant>
+                       | <string>
+                       | "(" <expression> ")"
+
+<argument-expression-list> ::= <expression> { "," <expression> }*
+
+<interrupt-marker> ::= "__interrupt__" "(" <integer-constant> ")"
